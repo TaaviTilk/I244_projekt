@@ -52,7 +52,7 @@ function asjad() {
 //    $start = ($page - 1) * $max;
     connect_db();
 //    $query = 'SELECT id, nimetus, pilt, text FROM rent ORDER BY nimetus ASC' ;
-    $query = 'SELECT id, nimetus, text, pilt, omanik  FROM rent ORDER BY ? ASC';
+    $query = 'SELECT id, nimetus, text, pilt, omanik  FROM rent WHERE omanik = ?';
     
     $stmt = mysqli_prepare($c, $query);
     if (mysqli_error($c)) {
@@ -117,10 +117,9 @@ function rendi() {
 
 
 function logi() {
-    // siia on vaja funktsionaalsust (13. nädalal)
     global $c;
     if (!empty($_SESSION["user"])) {
-        header("Location: ?page=loomad");
+        header("Location: ?page=pealeht");
     } else {
         $errors = array();
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -132,7 +131,7 @@ function logi() {
                 if (mysqli_num_rows($result)) {
                     $_SESSION["user"] = $_POST["user"];
                     $_SESSION["roll"] = mysqli_fetch_assoc($result)["roll"];
-                    header("Location: ?page=loomad");
+                    header("Location: ?page=pealeht");
                 } else {
                     $errors[] = "Vale kasutajanimi või parool!";
                 }
@@ -159,9 +158,7 @@ function rendi_valja() {
     $rentnik = $_SESSION["user"];
         $aeg = date("Y-m-d H:i:s");
         $id = $_POST['id'];
-    
-    //echo $rentnik, $aeg, $id;
-    //$query = 'UPDATE rent SET rentnik=?, aeg = ? WHERE id = ? LIMIT 1';
+
     $query = 'UPDATE rent SET aeg = ?, rentnik = ? WHERE id = ? LIMIT 1';
     $stmt = mysqli_prepare($c, $query);
     if (mysqli_error($c)) {
@@ -208,7 +205,7 @@ function kustuta() {
 }
 
 function lisa() {
-    // siia on vaja funktsionaalsust (13. nädalal)
+
     global $c;
     if ($_SESSION["roll"] == "admin") {
         if ($_SERVER['REQUEST_METHOD'] == "POST") {
@@ -224,7 +221,7 @@ function lisa() {
                 exit;
             }
             $id = mysqli_stmt_insert_id($stmt);
-            echo "nimi: " . $nimi . "<br/> text: " . $text . "<br/> text: " . $pilt . "<br/> omanik: " . $omanik. "<br/> ID: " . $id;
+            echo "nimi: " . $nimi . "<br/> text: " . $text . "<br/> text: " . $pilt . "<br/> omanik: " . $omanik;
             
             mysqli_stmt_execute($stmt);
             mysqli_stmt_close($stmt);
