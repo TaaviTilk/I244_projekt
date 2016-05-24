@@ -28,29 +28,33 @@ function asjad2($nimetus, $text, $pilt, $omanik) {
 function asjad() {
     include_once('views/asjad.php');
     global $c;
+    $kasutaja = $_SESSION["user"];
+    
 //    $max = 5;
 //    $start = ($page - 1) * $max;
     connect_db();
-    $query = 'SELECT id, nimetus, pilt, text FROM rent ORDER BY nimetus ASC';
-//    $query = 'SELECT id, nimetus, pilt, text FROM rent ORDER BY nimetus ASC ?,?';
+//    $query = 'SELECT id, nimetus, pilt, text FROM rent ORDER BY nimetus ASC' ;
+    $query = 'SELECT id, nimetus, text, pilt, omanik  FROM rent ORDER BY ? ASC';
+    
     $stmt = mysqli_prepare($c, $query);
     if (mysqli_error($c)) {
         echo mysqli_error($c);
         exit;
     }
-//    mysqli_stmt_bind_param($stmt, 'ii', $start, $max);
+    mysqli_stmt_bind_param($stmt, 's', $kasutaja);
     mysqli_stmt_execute($stmt);
-    mysqli_stmt_bind_result($stmt, $id, $nimetus, $pilt, $text);
+    mysqli_stmt_bind_result($stmt, $id, $nimetus, $text, $pilt, $omanik);
     $rows = array();
     while (mysqli_stmt_fetch($stmt)) {
         $rows[] = array(
             'id' => $id,
             'nimetus' => $nimetus,
-            'pilt' => $pilt,
             'text' => $text,
-            
-        );
+            'pilt' => $pilt,
+            'omanik' => $omanik,
+           );
     }
+    
     mysqli_stmt_close($stmt);
     return $rows;
     
@@ -143,7 +147,7 @@ function lisa() {
             $text = mysqli_real_escape_string($c, $_POST["text"]);
             $pilt = mysqli_real_escape_string($c, upload("pilt"));
             $omanik = mysqli_real_escape_string($c, $_POST["omanik"]);
-            $query = "INSERT INTO rent(nimetus, pilt, text, omanik) VALUES ('$nimi', '$pilt', '$text', $omanik)";
+            $query = "INSERT INTO rent(nimetus, text, pilt, omanik) VALUES ('$nimi', '$text', '$pilt', '$omanik')";
             $stmt = mysqli_prepare($c, $query);
             if (mysqli_error($c)) {
                 echo mysqli_error($c);
@@ -152,9 +156,11 @@ function lisa() {
             $id = mysqli_stmt_insert_id($stmt);
             mysqli_stmt_execute($stmt);
             mysqli_stmt_close($stmt);
+            
             return $id;
             echo "nimi: " . $nimi . "<br/> text: " . $text . "<br/> text: " . $pilt . "<br/> omanik: " . $omanik. "<br/> ID: " . $id;
-            header("refresh:10; url=?page=asjad");
+            header("refresh:2; url=?page=asjad");
+            
         } else {
             include_once('views/lisa.php');
         }
@@ -163,46 +169,6 @@ function lisa() {
     }
 }
 
-function lisa_originaal() {
-    // siia on vaja funktsionaalsust (13. nädalal)
-    global $c;
-    if (empty($_SESSION["user"])) {
-        echo '1';
-        header("Location: ?page=login");
-    } elseif ($_SESSION["roll"] != "admin") {
-        echo '2';
-        header("Location: ?page=asjad");
-    } else {
-        echo '3';
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            echo '4';
-            if ($_POST["nimi"] == "" || $_POST["text"] == "") {
-                echo '5';
-                $errors[] = "olete osa infot jätnud sisestamata!";
-            } elseif ($_FILES["pilt"]["error"] > 0) {
-                echo '6';
-                $errors[] = "Faili saatmine ebaõnnestus";
-            } else {
-                echo '7';
-                connect_db();
-                $nimi = mysqli_real_escape_string($c, $_POST["nimi"]);
-                $text = mysqli_real_escape_string($c, $_POST["text"]);
-                $pilt = mysqli_real_escape_string($c, upload("pilt"));
-                $sql = "INSERT INTO rent(nimi, text, pilt) VALUES ('$nimi', '$text', pildid/'$pilt')";
-                $result = mysqli_query($c, $sql);
-                if (mysqli_insert_id($c)) {
-                    echo '8';
-                    header("Location: ?page=asjad");
-                } else {
-                    echo '9';
-                    header("Location: ?page=lisa");
-                }
-            }
-        }
-    }
-
-    include_once('views/lisa.php');
-}
 
 function upload($name) {
     $allowedExts = array("jpg", "jpeg", "gif", "png");
