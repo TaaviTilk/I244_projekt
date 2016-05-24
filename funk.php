@@ -54,7 +54,7 @@ function asjad() {
             'omanik' => $omanik,
            );
     }
-    
+    print_r($rows);
     mysqli_stmt_close($stmt);
     return $rows;
     
@@ -154,11 +154,13 @@ function lisa() {
                 exit;
             }
             $id = mysqli_stmt_insert_id($stmt);
+            echo "nimi: " . $nimi . "<br/> text: " . $text . "<br/> text: " . $pilt . "<br/> omanik: " . $omanik. "<br/> ID: " . $id;
+            
             mysqli_stmt_execute($stmt);
             mysqli_stmt_close($stmt);
             
             return $id;
-            echo "nimi: " . $nimi . "<br/> text: " . $text . "<br/> text: " . $pilt . "<br/> omanik: " . $omanik. "<br/> ID: " . $id;
+            
             header("refresh:2; url=?page=asjad");
             
         } else {
