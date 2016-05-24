@@ -1,6 +1,6 @@
 
 
-<h1>ASJAD</h1>
+<h1>RENDITAVAD ASJAD</h1>
 
 
 
@@ -11,7 +11,9 @@
             <th>Pilt</th>
             <th>Selgitused</th>
             <th>Omanik</th>
-            <th>Tegevused</th>
+            <th>Rendi</th>
+            <th>Kelle käes</th>
+            <th>Mis ajast</th>
         </tr>
     </thead>
 
@@ -19,7 +21,7 @@
 
         <?php
         // koolon tsükli lõpus tähendab, et tsükkel koosneb HTML osast
-        foreach (asjad() as $rida):
+        foreach (rendi() as $rida):
             ?>
 
             <tr>
@@ -38,14 +40,16 @@
                 </td>
                 <td>
 
-                    <form action="?page=asjad" method="post"">
-                        <input type="hidden" name="action" value="delete">
-                        <!--<input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">-->
+                    <form method="post" action="?page=rendi_valja">
+                        <input type="hidden" name="action" value="rendi_valja">
+                        <input type="hidden" name="kasutaja" value="<?= $_SESSION['user']; ?>">
+                        <input type="hidden" name="aeg" value="<?= date("Y-m-d H:i:s"); ?>">
                         <input type="hidden" name="id" value="<?= $rida['id']; ?>">
-                        <button type="submit">Kustuta rida</button>
+                        <button type="submit">RENDIN</button>
                     </form>
 
                 </td>
+
             </tr>
 
         <?php endforeach; ?>

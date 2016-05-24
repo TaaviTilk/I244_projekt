@@ -9,7 +9,7 @@
     
     
    
-    <?= $_SESSION["user"];?>
+    
     
     <input type="submit" value="Lisa"/> 
 </form>

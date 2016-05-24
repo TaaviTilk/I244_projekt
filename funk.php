@@ -10,20 +10,6 @@ function connect_db() {
     mysqli_query($c, "SET CHARACTER SET UTF8");
 }
 
-function asjad2($nimetus, $text, $pilt, $omanik) {
-    include_once('views/asjad.php');
-    global $c;
-    $query = 'SELECT id, nimetus, text, pilt, omanik FROM rent ORDER BY nimetus ASC (?, ?, ?, ?)';
-    $stmt = mysqli_prepare($l, $query);
-    if (mysqli_error($l)) {
-        echo mysqli_error($l);
-        exit;
-    }
-    mysqli_stmt_execute($stmt);
-    $id = mysqli_stmt_insert_id($stmt);
-    mysqli_stmt_close($stmt);
-    return $id;
-}
 
 function asjad() {
     include_once('views/asjad.php');
@@ -54,11 +40,47 @@ function asjad() {
             'omanik' => $omanik,
            );
     }
-    print_r($rows);
+    //print_r($rows);
     mysqli_stmt_close($stmt);
     return $rows;
     
 }
+
+function rendi() {
+    include_once('views/rendi.php');
+    global $c;
+    $kasutaja = $_SESSION["user"];
+    
+//    $max = 5;
+//    $start = ($page - 1) * $max;
+    connect_db();
+//    $query = 'SELECT id, nimetus, pilt, text FROM rent ORDER BY nimetus ASC' ;
+    $query = 'SELECT id, nimetus, text, pilt, omanik  FROM rent ORDER BY nimetus ASC';
+    
+    $stmt = mysqli_prepare($c, $query);
+    if (mysqli_error($c)) {
+        echo mysqli_error($c);
+        exit;
+    }
+    //mysqli_stmt_bind_param($stmt, 's', $kasutaja);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_bind_result($stmt, $id, $nimetus, $text, $pilt, $omanik);
+    $rows = array();
+    while (mysqli_stmt_fetch($stmt)) {
+        $rows[] = array(
+            'id' => $id,
+            'nimetus' => $nimetus,
+            'text' => $text,
+            'pilt' => $pilt,
+            'omanik' => $omanik,
+           );
+    }
+    //print_r($rows);
+    mysqli_stmt_close($stmt);
+    return $rows;
+    
+}
+
 
 function logi() {
     // siia on vaja funktsionaalsust (13. nädalal)
@@ -97,44 +119,33 @@ function logout() {
 
 
 
-function muuda() {
-    // siia on vaja funktsionaalsust (13. nädalal)
-    global $c;
-    if (empty($_SESSION["user"])) {
-        header("Location: ?page=login");
-    } elseif ($_SESSION["roll"] != "admin") {
-        header("Location: ?page=loomad");
-    } else {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            if ($_POST["nimi"] == "" || $_POST["puur"] == "") {
-                $errors[] = "Nimi või puur on täitmata!";
-            } elseif ($_POST['id'] == "") {
-                header("Location: ?page=loomad");
-            } else {
-                $id = mysqli_real_escape_string($c, $_POST["id"]);
-                $loom = hangi_loom($id);
-                $nimi = mysqli_real_escape_string($c, $_POST["nimi"]);
-                $puur = mysqli_real_escape_string($c, $_POST["puur"]);
-                if (upload("liik")) {
-                    $liik = mysqli_real_escape_string($c, upload("liik"));
-                } else {
-                    $liik = $loom['liik'];
-                }
-                $sql = "UPDATE ttilk__loomaaed SET nimi = '$nimi', puur = '$puur', liik = '$liik' WHERE id = '$id'";
-                $result = mysqli_query($c, $sql);
-                header("Location: ?page=loomad");
-            }
-        } elseif ($_SERVER['REQUEST_METHOD'] == 'GET') {
-            $id = mysqli_real_escape_string($c, $_GET["id"]);
-            if ($id == "") {
-                header("Location: ?page=loomad");
-            } else {
-                $loom = hangi_loom($id);
-            }
-        }
-    }
+function rendi_valja() {
 
-    include_once('views/editvorm.html');
+    global $c;
+    $rentnik = $_SESSION["user"];
+        $aeg = date("Y-m-d H:i:s");
+        $id = $_POST['id'];
+    
+    //echo $rentnik, $aeg, $id;
+    //$query = 'UPDATE rent SET rentnik=?, aeg = ? WHERE id = ? LIMIT 1';
+    $query = 'UPDATE rent SET aeg = ?, rentnik = ? WHERE id = ? LIMIT 1';
+    $stmt = mysqli_prepare($c, $query);
+    if (mysqli_error($c)) {
+        echo mysqli_error($c);
+        exit;
+    }
+    mysqli_stmt_bind_param($stmt, 'ssi', $aeg, $rentnik, $id);
+    mysqli_stmt_execute($stmt);
+    
+    if (mysqli_stmt_error($stmt)) {
+        return false;
+    } 
+    
+    mysqli_stmt_close($stmt);
+    
+    header("Location: ?page=rendi");
+    
+
 }
 
 function lisa() {

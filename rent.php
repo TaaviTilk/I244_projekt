@@ -20,13 +20,18 @@ switch ($page) {
         logout();
         break;
 
-    case "asjad":
-        
+    case "asjad":        
         asjad();
         break;
 
     case "rendi":
         rendi();
+        break;
+
+    case "rendi_valja":
+        
+        
+        rendi_valja();
         break;
 
     case "lisa":
