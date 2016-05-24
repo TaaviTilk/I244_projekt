@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <title>Loomaaed</title>
+        <link rel="stylesheet" type="text/css" href="stiil.css">
+    </head>
+    <body>
+        <div id="wrap">
+            <ul id="menu">
+                <li><a href="?">PEALEHT</a></li>
+                <?php if(isset($_SESSION['user'])): ?>
+                <li><a href="?page=rendi">RENDI ASJU</a></li>
+
+                <?php if($_SESSION["roll"] == "admin"): ?>
+                <li><a href="?page=asjad">MINU ASJAD</a></li>
+                <li><a href="?page=lisa">LISA ASJU RENTI</a></li>
+                <?php endif; ?>
+
+                <li><a href="?page=logout">VÄLJA</a></li>
+                <?php else: ?>
+                <li><a href="?page=login">SISSE</a></li>
+                <?php endif; ?>
+            </ul>
+            <div id="content">
