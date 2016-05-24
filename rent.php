@@ -38,12 +38,12 @@ switch ($page) {
         lisa();
         break;
 
-    case "muuda":
-        muuda();
+    case "kustuta":
+        kustuta();
         break;
 
     default:
-        include_once('views/pealeht.php');
+        pealeht();
         break;
 }
 

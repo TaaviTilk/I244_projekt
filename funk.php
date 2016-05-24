@@ -10,6 +10,38 @@ function connect_db() {
     mysqli_query($c, "SET CHARACTER SET UTF8");
 }
 
+function pealeht() {
+    include_once('views/pealeht.php');
+    global $c;
+    
+    
+//    $max = 5;
+//    $start = ($page - 1) * $max;
+    connect_db();
+//    $query = 'SELECT id, nimetus, pilt, text FROM rent ORDER BY nimetus ASC' ;
+    $query = 'SELECT nimetus, text, pilt  FROM rent ORDER BY nimetus ASC';
+    
+    $stmt = mysqli_prepare($c, $query);
+    if (mysqli_error($c)) {
+        echo mysqli_error($c);
+        exit;
+    }
+        mysqli_stmt_execute($stmt);
+    mysqli_stmt_bind_result($stmt, $nimetus, $text, $pilt);
+    $rp = array();
+    while (mysqli_stmt_fetch($stmt)) {
+        $rp[] = array(
+            'nimetus' => $nimetus,
+            'text' => $text,
+            'pilt' => $pilt,
+           );
+    }
+    //print_r($rows);
+    mysqli_stmt_close($stmt);
+    return $rp;
+    
+}
+
 
 function asjad() {
     include_once('views/asjad.php');
@@ -55,7 +87,7 @@ function rendi() {
 //    $start = ($page - 1) * $max;
     connect_db();
 //    $query = 'SELECT id, nimetus, pilt, text FROM rent ORDER BY nimetus ASC' ;
-    $query = 'SELECT id, nimetus, text, pilt, omanik  FROM rent ORDER BY nimetus ASC';
+    $query = 'SELECT id, nimetus, text, pilt, omanik, aeg, rentnik  FROM rent ORDER BY nimetus ASC';
     
     $stmt = mysqli_prepare($c, $query);
     if (mysqli_error($c)) {
@@ -64,7 +96,7 @@ function rendi() {
     }
     //mysqli_stmt_bind_param($stmt, 's', $kasutaja);
     mysqli_stmt_execute($stmt);
-    mysqli_stmt_bind_result($stmt, $id, $nimetus, $text, $pilt, $omanik);
+    mysqli_stmt_bind_result($stmt, $id, $nimetus, $text, $pilt, $omanik, $aeg, $rentnik);
     $rows = array();
     while (mysqli_stmt_fetch($stmt)) {
         $rows[] = array(
@@ -73,6 +105,8 @@ function rendi() {
             'text' => $text,
             'pilt' => $pilt,
             'omanik' => $omanik,
+            'aeg' => $aeg,
+            'rentnik' => $rentnik,
            );
     }
     //print_r($rows);
@@ -144,6 +178,31 @@ function rendi_valja() {
     mysqli_stmt_close($stmt);
     
     header("Location: ?page=rendi");
+    
+
+}
+
+function kustuta() {
+    
+    global $c;
+    $id = $_POST['id'];
+
+    $query = 'DELETE FROM rent WHERE id = ? LIMIT 1';
+    $stmt = mysqli_prepare($c, $query);
+    if (mysqli_error($c)) {
+        echo mysqli_error($c);
+        exit;
+    }
+    mysqli_stmt_bind_param($stmt, 'i', $id);
+    mysqli_stmt_execute($stmt);
+    
+    if (mysqli_stmt_error($stmt)) {
+        return false;
+    } 
+    
+    mysqli_stmt_close($stmt);
+    
+    header("Location: ?page=asjad");
     
 
 }

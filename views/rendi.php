@@ -49,6 +49,12 @@
                     </form>
 
                 </td>
+                <td>
+                    <?= htmlspecialchars($rida['rentnik']); ?>
+                </td>
+                <td>
+                    <?= htmlspecialchars($rida['aeg']); ?>
+                </td>
 
             </tr>
 

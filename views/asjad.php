@@ -38,9 +38,7 @@
                 </td>
                 <td>
 
-                    <form action="?page=asjad" method="post"">
-                        <input type="hidden" name="action" value="delete">
-                        <!--<input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>">-->
+                    <form action="?page=kustuta" method="post"">
                         <input type="hidden" name="id" value="<?= $rida['id']; ?>">
                         <button type="submit">Kustuta rida</button>
                     </form>
