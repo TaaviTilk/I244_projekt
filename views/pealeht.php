@@ -1,7 +1,13 @@
 <h2>MEIL ON RENDTIDA JÄRGMISED ASJAD</h2>
 
+</head>
+<body>
 
 
+<?php include_once('views/renditingimused.html'); ?>
+
+
+<br/>
 <table id="asjad" border="1">
     <thead>
         <tr>
@@ -36,3 +42,5 @@
 
     </tbody>
 </table>
+        
+        <script src="renditingimused.js"></script>
