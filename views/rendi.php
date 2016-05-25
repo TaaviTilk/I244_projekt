@@ -2,7 +2,8 @@
 
 <h1>RENDITAVAD ASJAD</h1>
 
-
+<button id="kuva">KUVA RENDI TINGIMUSED</button>
+<?php include_once('views/renditingimused.html'); ?>
 
 <table id="asjad" border="1">
     <thead>
@@ -45,7 +46,7 @@
                         <input type="hidden" name="kasutaja" value="<?= $_SESSION['user']; ?>">
                         <input type="hidden" name="aeg" value="<?= date("Y-m-d H:i:s"); ?>">
                         <input type="hidden" name="id" value="<?= $rida['id']; ?>">
-                        <button type="submit">RENDIN</button>
+                        <button type="submit" id="kuva">RENDIN</button>
                     </form>
 
                 </td>

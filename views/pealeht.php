@@ -3,7 +3,7 @@
 </head>
 <body>
 
-
+<button id="kuva">KUVA RENDI TINGIMUSED</button>
 <?php include_once('views/renditingimused.html'); ?>
 
 

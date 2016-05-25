@@ -13,6 +13,7 @@ include_once('views/head.html');
 
 switch ($page) {
     case "login":
+        
         logi();
         break;
 
@@ -20,7 +21,7 @@ switch ($page) {
         logout();
         break;
 
-    case "asjad":        
+    case "asjad":
         asjad();
         break;
 
@@ -29,9 +30,7 @@ switch ($page) {
         break;
 
     case "rendi_valja":
-        
-        
-        rendi_valja();
+       rendi_valja();
         break;
 
     case "lisa":

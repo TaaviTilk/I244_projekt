@@ -1,12 +1,23 @@
-<div id="login">
-	<form action="?page=login" method="POST" >
-		<input type="text" name="user" placeholder="kasutajanimi"/><br/>
-		<input type="password" name="pass" placeholder="parool"/><br/>
-		<input type="submit" value="logi sisse!"/>
-	</form>
-	<?php if (isset($errors)):?>
-		<?php foreach($errors as $error):?>
-			<div style="color:red;"><?php echo htmlspecialchars($error); ?></div>
-		<?php endforeach;?>
-	<?php endif;?>
-</div>
+
+<div id="myModal" class="modal">
+
+
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close">×</span>
+            <h2>LOGI SISSE</h2>
+        </div>
+        <div class="modal-body">
+            <form action="?page=login" method="POST" >
+                <input type="text" name="user" placeholder="kasutajanimi"/><br/>
+                <input type="password" name="pass" placeholder="parool"/><br/>
+                <input type="submit" value="logi sisse!"/>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <h3></h3>
+        </div>
+    </div>
+
+
+
