@@ -1,24 +1,27 @@
 <?php
 
-function connect_db() {
+
     global $c;
     $host = "localhost";
-    $user = "root";
-    $pass = "Password";
+    $user = "root"; // "test"
+    $pass = "Password"; //'t3st3r123'
     $db = "test";
+    $sql_asjad = "rent"; //
+    $sql_kylastajad = 'ttilk__kylastajad'; //
     $c = mysqli_connect($host, $user, $pass, $db);
     mysqli_query($c, "SET CHARACTER SET UTF8");
-}
+
 
 function pealeht() {
-    global $c;
+    global $c, $sql_asjad;
     include_once('views/pealeht.php');
-
+    
     //    $max = 5;
 //    $start = ($page - 1) * $max;
 //    $query = 'SELECT id, nimetus, pilt, text FROM rent ORDER BY nimetus ASC' ;
-    $query = 'SELECT nimetus, text, pilt  FROM rent ORDER BY nimetus ASC';
-
+    $query = 'SELECT nimetus, text, pilt FROM '.$sql_asjad.' ORDER BY nimetus ASC';
+    
+    
     $stmt = mysqli_prepare($c, $query);
     if (mysqli_error($c)) {
         echo mysqli_error($c);
@@ -35,13 +38,15 @@ function pealeht() {
         );
     }
     //print_r($rows);
+    
     mysqli_stmt_close($stmt);
     return $rp;
+    
 }
 
 function asjad() {
     include_once('views/asjad.php');
-    global $c;
+    global $c, $sql_asjad;
 
     if (!empty($_SESSION["user"])) {
 
@@ -52,7 +57,7 @@ function asjad() {
 //    $start = ($page - 1) * $max;
         
 //    $query = 'SELECT id, nimetus, pilt, text FROM rent ORDER BY nimetus ASC' ;
-        $query = 'SELECT id, nimetus, text, pilt, omanik  FROM rent WHERE omanik = ?';
+        $query = 'SELECT id, nimetus, text, pilt, omanik  FROM '.$sql_asjad.' WHERE omanik = ?';
 
         $stmt = mysqli_prepare($c, $query);
         if (mysqli_error($c)) {
@@ -82,7 +87,7 @@ function asjad() {
 
 function rendi() {
     include_once('views/rendi.php');
-    global $c;
+    global $c, $sql_asjad;
 
     if (!empty($_SESSION["user"])) {
         $kasutaja = $_SESSION["user"];
@@ -91,7 +96,7 @@ function rendi() {
 //    $start = ($page - 1) * $max;
        
 //    $query = 'SELECT id, nimetus, pilt, text FROM rent ORDER BY nimetus ASC' ;
-        $query = 'SELECT id, nimetus, text, pilt, omanik, aeg, rentnik  FROM rent ORDER BY nimetus ASC';
+        $query = 'SELECT id, nimetus, text, pilt, omanik, aeg, rentnik  FROM '.$sql_asjad.' ORDER BY nimetus ASC';
 
         $stmt = mysqli_prepare($c, $query);
         if (mysqli_error($c)) {
@@ -122,14 +127,14 @@ function rendi() {
 }
 
 function rendi_valja() {
-    global $c;
+    global $c, $sql_asjad;
     if (!empty($_SESSION["user"])|| $_POST['id']<0) {
 
         $rentnik = $_SESSION["user"];
         $aeg = date("Y-m-d H:i:s");
         $id = $_POST['id'];
 
-        $query = 'UPDATE rent SET aeg = ?, rentnik = ? WHERE id = ? LIMIT 1';
+        $query = 'UPDATE '.$sql_asjad.' SET aeg = ?, rentnik = ? WHERE id = ? LIMIT 1';
         $stmt = mysqli_prepare($c, $query);
         if (mysqli_error($c)) {
             echo mysqli_error($c);
@@ -151,12 +156,12 @@ function rendi_valja() {
 }
 
 function kustuta() {
-    global $c;
+    global $c, $sql_asjad;
 
     if (($_SESSION["roll"] == "admin" || !empty($_SESSION["user"]))) {
         $id = $_POST['id'];
 
-        $query = 'DELETE FROM rent WHERE id = ? LIMIT 1';
+        $query = 'DELETE FROM '.$sql_asjad.' WHERE id = ? LIMIT 1';
         $stmt = mysqli_prepare($c, $query);
         if (mysqli_error($c)) {
             echo mysqli_error($c);
@@ -179,7 +184,7 @@ function kustuta() {
 
 function lisa() {
 
-    global $c;
+    global $c, $sql_asjad;
     if ($_SESSION["roll"] == "admin") {
         if ($_SERVER['REQUEST_METHOD'] == "POST") {
             $nimi = mysqli_real_escape_string($c, $_POST["nimetus"]);
@@ -187,7 +192,7 @@ function lisa() {
             $pilt = mysqli_real_escape_string($c, upload("pilt"));
             $omanik = mysqli_real_escape_string($c, $_POST["omanik"]);
             if($nimi!=""||$pilt !=""){
-            $query = "INSERT INTO rent(nimetus, text, pilt, omanik) VALUES ('$nimi', '$text', '$pilt', '$omanik')";
+            $query = "INSERT INTO ".$sql_asjad."(nimetus, text, pilt, omanik) VALUES ('$nimi', '$text', '$pilt', '$omanik')";
             $stmt = mysqli_prepare($c, $query);
             if (mysqli_error($c)) {
                 echo mysqli_error($c);
@@ -242,7 +247,7 @@ function upload($name) {
 }
 
 function logi() {
-    global $c;
+    global $c, $sql_kylastajad;
     if (!empty($_SESSION["user"])) {
         header("Location: ?");
     } else {
@@ -251,7 +256,7 @@ function logi() {
             if ($_POST["user"] != "" && $_POST["pass"] != "") {
                 $u = mysqli_real_escape_string($c, $_POST["user"]);
                 $p = mysqli_real_escape_string($c, $_POST["pass"]);
-                $sql = "SELECT id, roll from ttilk__kylastajad WHERE username = '$u' AND passw = SHA1('$p')";
+                $sql = "SELECT id, roll from ".$sql_kylastajad." WHERE username = '$u' AND passw = SHA1('$p')";
                 $result = mysqli_query($c, $sql);
                 if (mysqli_num_rows($result)) {
                     $_SESSION["user"] = $_POST["user"];
