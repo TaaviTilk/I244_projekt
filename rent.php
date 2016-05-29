@@ -1,6 +1,7 @@
 <?php
 
 require_once('funk.php');
+
 session_start();
 
 

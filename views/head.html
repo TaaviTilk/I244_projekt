@@ -4,10 +4,12 @@
         <meta charset="utf-8"/>
         <title>ASJADE RENT</title>
         <link rel="stylesheet" type="text/css" href="stiil.css">
+        <link rel="stylesheet" type="text/css" href="login.css">
+        <script src="login.js"></script>
         
         
     </head>
-    <body>
+    <body onload="MyFunction()">
         <div id="wrap">
             <ul id="menu">
                 <li><a href="?">PEALEHT</a></li>
@@ -21,7 +23,7 @@
 
                 <li><a href="?page=logout">VÄLJA</a></li>
                 <?php else: ?>
-                <li><a id="myLink" href="#" onclick="MyFunction();return false;">SISSE</a></li>
+                <li><a id="js_login" href="#" onclick="MyFunction();return false;">SISSE</a></li>
                 <?php endif; ?>
             </ul>
             <div id="content">

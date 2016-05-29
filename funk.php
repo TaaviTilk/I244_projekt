@@ -3,11 +3,22 @@
 
     global $c;
     $host = "localhost";
-    $user = "root"; // "test"
-    $pass = "Password"; //'t3st3r123'
+    
+    //OMA ARVUTI DB AMDED
+    $user = "root"; 
+    $pass = "Password"; 
     $db = "test";
-    $sql_asjad = "rent"; //
-    $sql_kylastajad = 'ttilk__kylastajad'; //
+    $sql_asjad = "rent"; 
+    $sql_kylastajad = 'ttilk__kylastajad'; 
+    
+    // ENOS DB ANDMED -----------------------------------------
+//    $user = "test"; 
+//    $pass = "t3st3r123"; 
+//    $db = "test";
+//    $sql_asjad = "ttilk__rent"; 
+//    $sql_kylastajad = 'ttilk__kasutajad';
+    
+    
     $c = mysqli_connect($host, $user, $pass, $db);
     mysqli_query($c, "SET CHARACTER SET UTF8");
 
@@ -251,7 +262,7 @@ function logi() {
     if (!empty($_SESSION["user"])) {
         header("Location: ?");
     } else {
-        $errors = array();
+        //$errors = array();
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if ($_POST["user"] != "" && $_POST["pass"] != "") {
                 $u = mysqli_real_escape_string($c, $_POST["user"]);
@@ -263,10 +274,13 @@ function logi() {
                     $_SESSION["roll"] = mysqli_fetch_assoc($result)["roll"];
                     header("Location: ?page=rendi");
                 } else {
-                    $errors[] = "Vale kasutajanimi või parool!";
+                    //$errors[] = "Vale kasutajanimi või parool!";
+                    echo 'Vale kasutajanimi või parool!';
                 }
             } else {
-                $errors[] = "Kasutajanimi või parool on täitmata!";
+               //$errors[] = "Kasutajanimi või parool on täitmata!";
+                echo '<h4>Kasutajanimi või parool on täitmata!</h4><br/><br/><br/><br/>'
+                . '<b>Kasutajaks reegisteerimiseks, pöörduge Rendin OÜ esindaja poole';             
             }
         }
     }
