@@ -6,13 +6,13 @@ Projekt on kättesaadav siit -->  http://enos.itcollege.ee/~ttilk/RENDI/rent.php
 
 Kuna registeerimsit ei ole tehtud, siis testimiseks on järgmised kasutajad loodud
 
-1. kasutaja
+__1. kasutaja__
 
 kasutajanimi: user
 
 parool: user
 
-2. admin kasutaja
+__2. admin kasutaja__
 
 kasutajanimi: admin
 
