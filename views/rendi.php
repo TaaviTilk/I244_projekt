@@ -5,7 +5,7 @@
 <button id="kuva">KUVA RENDI TINGIMUSED</button>
 <?php include_once('views/renditingimused.html'); ?>
 
-<table id="asjad" border="1">
+<table id="asjad">
     <thead>
         <tr>
             <th>Nimetus</th>

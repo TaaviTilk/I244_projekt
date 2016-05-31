@@ -1,14 +1,14 @@
-<h2>MEIL ON RENDTIDA JÄRGMISED ASJAD</h2>
+<center><h2>MEIL ON RENDTIDA JÄRGMISED ASJAD</h2></center>
 
 </head>
 <body>
 
-<button id="kuva">KUVA RENDI TINGIMUSED</button>
+
 <?php include_once('views/renditingimused.html'); ?>
 
 
 <br/>
-<table id="asjad" border="1">
+<table id="asjad" align="center">
     <thead>
         <tr>
             <th>Nimetus</th>
@@ -42,5 +42,7 @@
 
     </tbody>
 </table>
+<br/>
+<center><button id="kuva">KUVA RENDI TINGIMUSED</button></center>
         
         <script src="renditingimused.js"></script>
