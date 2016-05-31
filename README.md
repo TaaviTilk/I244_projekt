@@ -21,4 +21,4 @@ parool: admin
 
 Projektis saate erinevate aksutajatega sisse logida ja asju rentida ja lisada asju renti ja neid hallata.
 
-~~text that has been struckthrough~~
+
